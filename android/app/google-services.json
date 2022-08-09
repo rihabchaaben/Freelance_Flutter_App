@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "102625130392",
+    "project_id": "freelancedxb-f9487",
+    "storage_bucket": "freelancedxb-f9487.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102625130392:android:583f794cb357b32c425ded",
+        "android_client_info": {
+          "package_name": "com.example.freelance_dxb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102625130392-0lpd4mra5dhe16unofcj70e389a7t2bg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW6H9aBwq6NQDVvtX1eRlI1qZpDzz8Y3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102625130392-0lpd4mra5dhe16unofcj70e389a7t2bg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
