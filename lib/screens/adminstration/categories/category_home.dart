@@ -34,7 +34,6 @@ class _CategoryHomeState extends State<CategoryHome> {
             );
           }
 
-          // Storing Data
           final List subcategoriesData = [];
           final List firebaseData = [];
           snapshot.data?.docs.map((DocumentSnapshot documentSnapshot) {
@@ -84,35 +83,22 @@ class _CategoryHomeState extends State<CategoryHome> {
                                   child: Text(
                                     'designation',
                                     style: TextStyle(
-                                        fontSize: 17,
+                                        fontSize: 23,
                                         fontWeight: FontWeight.bold,
                                         color: Color.fromARGB(255, 46, 45, 45)),
                                   ),
                                 ),
                               ),
                             ),
+                           
                             TableCell(
                               child: Container(
                                 //color: Colors.greenAccent,
                                 child: Center(
                                   child: Text(
-                                    'subcategories',
+                                    'Actions',
                                     style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(255, 46, 45, 45)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                //color: Colors.greenAccent,
-                                child: Center(
-                                  child: Text(
-                                    'Action',
-                                    style: TextStyle(
-                                        fontSize: 17,
+                                        fontSize: 23,
                                         fontWeight: FontWeight.bold,
                                         color: Color.fromARGB(255, 46, 45, 45)),
                                   ),
@@ -129,45 +115,25 @@ class _CategoryHomeState extends State<CategoryHome> {
                                   child: Center(
                                     child: Text(
                                       firebaseData[i]['designation'],
-                                      style: txt2,
+                                      style: TextStyle(fontSize: 20),
                                     ),
                                   ),
                                 ),
                               ),
-                              TableCell(
-                                  child: StreamBuilder(
-                                      stream: CategoriesRepository()
-                                          .getSubcategories(
-                                              idcat: firebaseData[i]['idcat']),
-                                      builder: (context,
-                                          AsyncSnapshot<QuerySnapshot>
-                                              streamSnapshott) {
-                                        if (streamSnapshott.hasData) {
-                                          snapshot.data?.docs.map(
-                                              (DocumentSnapshot
-                                                  documentSnapshott) {
-                                            Map store = documentSnapshott.data()
-                                                as Map<String, dynamic>;
-                                            subcategoriesData.add(store);
-                                            store['idsubcat'] =
-                                                documentSnapshott.id;
-                                          }).toList();
-                                        }
-
-                                        return Text(''
-                                            //  subcategoriesData[i].toString()
-                                            );
-                                      })),
+                            
                               TableCell(
                                 child: Row(
                                   children: [
                                     IconButton(
+                                     
                                       onPressed: () {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                            builder: (context) => EditPage(
-                                              docID: firebaseData[i]['idcat'],
+                                         
+                                              MaterialPageRoute(
+                              builder: (context) => BlocProvider(
+                                create: (context) => AddCategoryCubit(),
+                                child: EditPage(   docID: firebaseData[i]['idcat'], designation: firebaseData[i]['designation'],),
                                             ),
                                           ),
                                         );
@@ -198,7 +164,7 @@ class _CategoryHomeState extends State<CategoryHome> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(100, 300, 100, 100),
+                      padding: const EdgeInsets.fromLTRB(100, 150, 100, 100),
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
@@ -216,7 +182,7 @@ class _CategoryHomeState extends State<CategoryHome> {
                           );
                         },
                         child: const Text('Add',
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Colors.white,fontSize: 25)),
                       ),
                     )
                   ])),

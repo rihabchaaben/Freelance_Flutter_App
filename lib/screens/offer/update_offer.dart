@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freelance_dxb/repositories/offer_repository.dart';
+import 'package:freelance_dxb/screens/layout/home_layout.dart';
 import 'package:freelance_dxb/screens/offer/fetch_offers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -56,13 +58,15 @@ class _UpdateOfferState extends State<UpdateOffer> {
                       left: 0.0,
                       right: 100.0,
                     ),
-                    child: Text(
-                      'Update Freelance  offer',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 5, 5, 5),
+                    child: Center(
+                      child: Text(
+                        'Update Freelance  offer',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          color: Color.fromARGB(255, 5, 5, 5),
+                        ),
                       ),
                     ),
                   ),
@@ -85,6 +89,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                       child: Column(
                                         children: <Widget>[
                                           TextField(
+                                            style: TextStyle(fontSize: 18),
                                             controller: _titleController,
                                             decoration: InputDecoration(
                                                 labelText: 'Title',
@@ -96,12 +101,13 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                                 labelStyle: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 240, 67, 67),
-                                                  fontSize: 14,
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w400,
                                                 )),
                                           ),
                                           SizedBox(height: 16.0),
                                           TextField(
+                                        style: TextStyle(fontSize: 18),
                                             maxLines: 8,
                                             controller: _descriptionController,
                                             decoration: InputDecoration(
@@ -114,7 +120,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                                 labelStyle: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 240, 67, 67),
-                                                  fontSize: 14,
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w400,
                                                 ), // labelText: 'Enter description',
                                                 enabledBorder:
@@ -140,6 +146,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                           ),
                                           SizedBox(height: 16.0),
                                           TextField(
+                                           style: TextStyle(fontSize: 18),
                                             controller: _priceController,
                                             decoration: InputDecoration(
                                                 labelText: 'Offer price',
@@ -151,12 +158,13 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                                 labelStyle: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 240, 67, 67),
-                                                  fontSize: 14,
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w400,
                                                 )),
                                           ),
                                           SizedBox(height: 16.0),
                                           TextField(
+                                                 style: TextStyle(fontSize: 18),
                                             controller:
                                                 dateinputstart, //editing controller of this TextField
                                             decoration: InputDecoration(
@@ -169,7 +177,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                               labelStyle: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 240, 67, 67),
-                                                fontSize: 14,
+                                                fontSize: 18,
                                                 fontWeight: FontWeight.w400,
                                               ),
                                               enabledBorder: OutlineInputBorder(
@@ -222,19 +230,20 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                           ),
                                           SizedBox(height: 16.0),
                                           TextField(
+                                   style: TextStyle(fontSize: 18),
                                             controller:
                                                 dateinputend, //editing controller of this TextField
                                             decoration: InputDecoration(
                                               labelText: 'end date',
                                               hintText: ' enter date',
                                               hintStyle: TextStyle(
-                                                  fontSize: 12.0,
+                                                  fontSize: 18.0,
                                                   color: Color.fromARGB(
                                                       255, 180, 174, 174)),
                                               labelStyle: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 240, 67, 67),
-                                                fontSize: 14,
+                                                fontSize: 18,
                                                 fontWeight: FontWeight.w400,
                                               ),
                                               enabledBorder: OutlineInputBorder(
@@ -295,12 +304,13 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                                       MaterialPageRoute(
                                                           builder: (BuildContext
                                                                   context) =>
-                                                              DisplayOffers()),
+                                                              HomeLayout()),
                                                     );
 
                                                     setState(() {
                                                       isUpdating = true;
                                                       OfferRepository().updateOffer(
+                                                      
                                                           _titleController.text,
                                                           widget.offer.id!,
                                                           _descriptionController
@@ -308,12 +318,14 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                                           dateinputend.text,
                                                           dateinputstart.text,
                                                           _priceController
-                                                              .text);
+                                                              .text,
+                                                                FirebaseAuth.instance.currentUser!.uid,
+                                                              );
                                                     });
                                                   },
                                                   child: Text('Update ',
                                                       style: TextStyle(
-                                                          fontSize: 20.0,
+                                                          fontSize: 25.0,
                                                           color: Colors.white)),
                                                 ),
                                         ],

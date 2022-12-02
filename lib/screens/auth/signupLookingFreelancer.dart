@@ -5,7 +5,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/cupertino.dart';
 // ignore: unnecessary_import
 import 'package:flutter/rendering.dart';
-import 'package:freelance_dxb/screens/auth/start_screen.dart';
 import 'package:freelance_dxb/screens/layout/home_layout_customer.dart';
 // ignore: unused_import
 import 'package:freelance_dxb/style/text.dart';
@@ -18,6 +17,9 @@ import 'package:freelance_dxb/style/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:freelance_dxb/style/style.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+
+import '../logIn/log_in.dart';
 
 class SignUpLooking extends StatefulWidget {
   const SignUpLooking({Key? key}) : super(key: key);
@@ -85,7 +87,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 25,
                             color: Color.fromARGB(255, 5, 5, 5),
                           ),
                         ),
@@ -117,7 +119,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
                                         const SizedBox(
                                           height: 5.0,
                                         ),
-                                        buildPhoneInput(),
+                                        buildUserPhoneInput(),
                                         const SizedBox(
                                           height: 5.0,
                                         ),
@@ -148,7 +150,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
                                                 text: 'I agree to the ',
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 14.0),
+                                                    fontSize: 18.0),
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                       text:
@@ -156,7 +158,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
                                                       style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 240, 67, 67),
-                                                        fontSize: 14,
+                                                        fontSize: 18,
                                                       )),
                                                   TextSpan(
                                                       text: 'and ',
@@ -168,7 +170,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
                                                       style: TextStyle(
                                                         color: Color.fromARGB(
                                                             255, 240, 67, 67),
-                                                        fontSize: 14,
+                                                        fontSize: 18,
                                                       )),
                                                 ],
                                               ),
@@ -256,6 +258,12 @@ class _SignUpLookingState extends State<SignUpLooking> {
 
   buildEmailInput() {
     return TextFormField(
+      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'please enter your email';
+                                        }
+                                        return null;
+                                      },
       keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
         labelText: 'Email',
@@ -264,7 +272,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
             fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
         labelStyle: const TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
         focusColor: Colors.white,
@@ -312,29 +320,20 @@ class _SignUpLookingState extends State<SignUpLooking> {
             fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
         labelStyle: TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
     );
   }
-
-  buildPhoneInput() {
-    return TextFormField(
+ buildUserPhoneInput() {
+   //phoneInput.text="32123131";
+    return IntlPhoneField(
       controller: _phoneController,
-      onChanged: (val) {},
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your phone number';
-        }
-        return null;
-      },
-      style: const TextStyle(
-        fontSize: 14,
-        color: Color.fromARGB(255, 10, 10, 10),
-        fontWeight: FontWeight.w600,
-      ),
-      decoration: const InputDecoration(
+                  decoration: const InputDecoration(
+        hintText: 'Please enter your phone Number',
+        hintStyle: TextStyle(
+            fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
         focusColor: Colors.white,
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
@@ -343,19 +342,23 @@ class _SignUpLookingState extends State<SignUpLooking> {
           borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
         ),
         fillColor: Colors.white,
-        labelText: 'Mobile Phone',
-        hintText: 'Please enter your phone number',
-        hintStyle: TextStyle(
-            fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
+        labelText: 'Phone Number',
         labelStyle: TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
-    );
+                  onChanged: (phone) {
+                   // print(phone.completeNumber);
+                    _phoneController.text=phone.number;
+                  },
+                  onCountryChanged: (country) {
+                    print('Country changed to: ' + country.name);
+                  },
+                );
   }
-
+ 
   buildAdressInput() {
     return TextFormField(
       controller: _fAdressController,
@@ -386,7 +389,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
         labelText: 'Adress',
         labelStyle: TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -433,7 +436,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
         labelText: 'Password',
         labelStyle: const TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -447,7 +450,8 @@ class _SignUpLookingState extends State<SignUpLooking> {
 
         style: const TextStyle(
           fontFamily: 'Montserrat',
-          color: Color.fromARGB(255, 182, 175, 175),
+          fontSize: 18,
+          color: Color.fromARGB(255, 99, 96, 96),
         ),
 
         // ignore: prefer_const_constructors
@@ -456,6 +460,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
           TextSpan(
             text: 'Sign In',
             style: const TextStyle(
+              fontSize: 23,
                 fontFamily: 'Montserrat',
                 //fontWeight: FontWeight.bold,
                 color: const Color.fromARGB(255, 240, 67, 67)),
@@ -464,7 +469,7 @@ class _SignUpLookingState extends State<SignUpLooking> {
                     () {
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return const StartScreen();
+                        return  SignIn();
                       }));
                     },
                   ),

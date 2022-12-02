@@ -1,64 +1,79 @@
-import 'package:freelance_dxb/models/erole.dart';
 
 class UserModel {
-  String? name;
-  String? phone;
-  String? email;
+  String name="";
+  String? cv;
+  String phone="";
+  String email="";
   String? image;
-  String? adress;
+  String adress="";
   String? bio;
-  String? role;
-  String? uid;
-  String? password;
-  bool? isVerified;
+  String role="";
+  String uid="";
+String? rate="0.0";
+  String password="";
   String? sessionPrice;
   String? hourPrice;
+   List<String> subcategory=[];
 
   UserModel(
-      {this.name,
-      this.phone,
-      this.email,
+
+      {
+        required this.name,
+      this.cv,
+      this.rate,
+      required this.subcategory,
+     required this.phone,
+      required this.email,
       this.image,
       this.bio,
-      this.uid,
-      this.isVerified,
-      this.role,
-      this.password,
-      this.adress,
+     required this.uid,
+    required  this.role,
+    required this.password,
+     required  this.adress,
       this.hourPrice,
       this.sessionPrice});
 
   Map<String, dynamic> toMap() {
     return {
+      'cv':cv,
+      'rate':rate,
       'name': name,
       'phone': phone,
       'email': email,
       'image': image,
       'uid': uid,
       'bio': bio,
-      // 'cover': cover,
-      'isVerified': isVerified,
       'role': role,
       'password': password,
       'adress': adress,
       'sessionPrice': sessionPrice,
-      'hourPrice': hourPrice
+      'hourPrice': hourPrice,
+      'subcategory':subcategory,
     };
   }
-
-  UserModel.fromJson(Map<String, dynamic>? json) {
-    role = json!['role'];
-    phone = json['phone'];
-    name = json['name'];
-    password = json['password'];
-    adress = json['adress'];
-    email = json['email'];
-    image = json['image'];
-    // cover = json['cover'];
-    uid = json['uid'];
-    hourPrice = json['hourPrice'];
-    sessionPrice = json['sessionPrice'];
-    bio = json['bio'];
-    //isVerified = json['isVerified'];
+  void set setRate(String? rate) {
+    rate = rate;}
+  UserModel.fromMap(Map<String, dynamic>? map) {
+    role = map!['role'];
+    rate = map['rate'];
+    phone = map['phone'];
+    name = map['name'];
+    password = map['password'];
+    adress = map['adress'];
+    email = map['email'];
+    image = map['image'];
+    uid = map['uid'];
+    hourPrice = map['hourPrice'];
+    sessionPrice = map['sessionPrice'];
+    bio = map['bio'];
+    cv = map['cv'];
+     subcategory=  map['subcategory'] == null
+          ? <String>[]
+          : (map['subcategory'] as List<dynamic>).cast<String>();
+  
   }
+
+ 
+  
+   
 }

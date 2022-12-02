@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance_dxb/cubit/home_layout/cubit.dart';
@@ -5,6 +6,8 @@ import 'package:freelance_dxb/cubit/home_layout/states.dart';
 import 'package:freelance_dxb/screens/editProfile/edit_profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../../cubit/rate/cubit/rate_review_cubit.dart';
 
 class Setings extends StatelessWidget {
   const Setings({Key? key}) : super(key: key);
@@ -39,22 +42,23 @@ class Setings extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20,),
                     Center(
                         child: Text(
-                            HomeCubit.get(context).userModel!.name ?? "",
+                            HomeCubit.get(context).userModel!.name,
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 17))),
+                                fontWeight: FontWeight.w500, fontSize: 25))),
                     SizedBox(
-                      height: 7,
+                      height: 20,
                     ),
                     Center(
                         child: Text(
                       HomeCubit.get(context).userModel!.bio ?? "",
-                      style: Theme.of(context).textTheme.caption,
+                      style: TextStyle(fontSize: 16),
                     )),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 18.0, horizontal: 7),
+                          vertical:50, horizontal: 7),
                       child: Row(
                         children: [
                           Expanded(
@@ -63,10 +67,10 @@ class Setings extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "5",
+                                    HomeCubit.get(context).userModel!.rate ?? "",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 17),
+                                        fontSize: 20),
                                   ),
                                   SizedBox(
                                     height: 5,
@@ -75,7 +79,7 @@ class Setings extends StatelessWidget {
                                       style: Theme.of(context)
                                           .textTheme
                                           .caption!
-                                          .copyWith(fontSize: 14))
+                                          .copyWith(fontSize: 20))
                                 ],
                               ),
                               onTap: () {},
@@ -83,25 +87,45 @@ class Setings extends StatelessWidget {
                           ),
                           Expanded(
                             child: InkWell(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "10k",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 17),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text("Reviews",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .caption!
-                                          .copyWith(fontSize: 14))
-                                ],
-                              ),
+                              child:  Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        StreamBuilder<QuerySnapshot>(
+                          stream: context
+                              .read<RateReviewCubit>()
+                              .getCount(idFreelancer:FirebaseAuth.instance.currentUser!.uid ),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) {
+                              return Text(
+                                "0",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 20),
+                              );
+                            }
+                            final documentSnapshotList = snapshot.data!.docs;
+                            print(documentSnapshotList.length);
+                            return Text(
+                              documentSnapshotList.length.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 20),
+                            );
+                            // return
+                          },
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Reviews",
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontSize: 20),
+                        ),
+                      ],
+                    ),
                               onTap: () {},
                             ),
                           ),
@@ -114,13 +138,13 @@ class Setings extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(130, 0, 0, 0),
                       child: RatingBar.builder(
-                        initialRating: 3,
+                        initialRating:  double.parse(HomeCubit.get(context).userModel!.rate!),
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 5,
                         itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                        itemSize: 20,
+                        itemSize: 30,
                         itemBuilder: (context, _) => Icon(
                           Icons.star,
                           color: Colors.amber,
@@ -133,10 +157,10 @@ class Setings extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          width: 15,
+                          width: 30,
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(300, 8.0, 0, 8.0),
+                          padding: const EdgeInsets.fromLTRB(300, 30, 0, 8.0),
                           child: OutlinedButton(
                             onPressed: () {
                               Navigator.push(
@@ -148,6 +172,7 @@ class Setings extends StatelessWidget {
                             child: Icon(
                               Icons.edit_rounded,
                               color: Colors.red,
+                              size: 35,
                             ),
                           ),
                         ),

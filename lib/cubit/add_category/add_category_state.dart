@@ -17,11 +17,11 @@ class AddCategoryFailed extends AddCategoryState {
 
 class AddCategoryEditing extends AddCategoryState {
   final String designation;
-  final Set<String> subCategories;
+  final List<String> subCategories;
 
   AddCategoryEditing({
     this.designation = "",
-    this.subCategories = const {},
+    this.subCategories =const[],
   });
 
   @override
@@ -29,11 +29,25 @@ class AddCategoryEditing extends AddCategoryState {
 
   AddCategoryEditing copyWith({
     String? designation,
-    Set<String>? subCategories,
+    List<String>? subCategories,
   }) {
     return AddCategoryEditing(
       designation: designation ?? this.designation,
       subCategories: subCategories ?? this.subCategories,
     );
   }
+}
+class EditCategorySuccess extends AddCategoryState {}
+class EditCategoryError extends AddCategoryState {
+  String error;
+  EditCategoryError({
+    required this.error,
+  });
+  
+}
+class GetCategorySuccess extends AddCategoryState {
+  final Category category;
+
+  GetCategorySuccess(this.category);
+
 }

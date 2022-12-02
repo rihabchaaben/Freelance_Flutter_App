@@ -1,91 +1,95 @@
-abstract class HomeStates{}
-class HomeInitialState extends HomeStates{}
+import 'package:equatable/equatable.dart';
+import 'package:freelance_dxb/models/chat_model.dart';
+import 'package:freelance_dxb/models/message_model.dart';
+import 'package:freelance_dxb/models/user_model.dart';
 
+import '../../models/category_model.dart';
 
-class getUserLoadingState extends HomeStates{}
-class getUserSuccessState extends HomeStates{}
-class getUserErrorState extends HomeStates{
+abstract class HomeStates extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class HomeInitialState extends HomeStates {}
+
+class getUserLoadingState extends HomeStates {}
+
+class getUserSuccessState extends HomeStates {}
+
+class getUserErrorState extends HomeStates {
   late String error;
   getUserErrorState(this.error);
 }
 
-class changeIndexState extends HomeStates{}
+class changeIndexState extends HomeStates {}
+class ChatMessagesSucessState extends HomeStates{
+  final List<ChatModel> chatMessages;
+    ChatMessagesSucessState(this.chatMessages);
 
-class getProfileImagePickerSuccessState extends HomeStates{}
-class getProfileImagePickerErrorState extends HomeStates{}
+  @override
+  List<Object?> get props => [chatMessages];
 
-class getCoverImagePickerSuccessState extends HomeStates{}
-class getCoverImagePickerErrorState extends HomeStates{}
+}
 
+class getProfileImagePickerSuccessState extends HomeStates {}
 
-class uploadCoverImagePickerLoadingState extends HomeStates{}
-class uploadCoverImagePickerSuccessState extends HomeStates{}
-class uploadCoverImagePickerErrorState extends HomeStates{}
+class getProfileImagePickerErrorState extends HomeStates {}
 
+class getCoverImagePickerSuccessState extends HomeStates {}
 
-class uploadProfileImagePickerLoadingState extends HomeStates{}
-class uploadProfileImagePickerSuccessState extends HomeStates{}
-class uploadProfileImagePickerErrorState extends HomeStates{}
+class getCoverImagePickerErrorState extends HomeStates {}
 
+class UploadCvLoadingState extends HomeStates {}
 
-class uploadUserErrorState extends HomeStates{}
-class uploadUserLoadingState extends HomeStates{}
+class UploadCvSuccessState extends HomeStates {}
 
+class UploadCvErrorState extends HomeStates {}
 
-class updateUploadDataUser extends HomeStates{}
+class uploadProfileImagePickerLoadingState extends HomeStates {}
 
-class addPhotoPost extends HomeStates{}
+class uploadProfileImagePickerSuccessState extends HomeStates {}
 
-class postUploadSuccessState extends HomeStates{}
-class postUploadLoadingState extends HomeStates{}
-class postUploadErrorState extends HomeStates{}
+class uploadProfileImagePickerErrorState extends HomeStates {}
 
+class uploadUserErrorState extends HomeStates {}
 
-class uploadPostImageErrorState extends HomeStates{}
-class uploadPostImageSuccessState extends HomeStates{}
-class uploadPostImageLoadingState extends HomeStates{}
+class uploadUserLoadingState extends HomeStates {}
 
-class getPostsErrorState extends HomeStates{}
-class getPostsSuccessState extends HomeStates{}
-class getPostsLoadingState extends HomeStates{}
+class updateUploadDataUser extends HomeStates {}
 
-class likePostErrorState extends HomeStates{}
-class likePostSuccessState extends HomeStates{}
+class getAllUsersLoadingState extends HomeStates {}
 
-class dislikePostSuccessState extends HomeStates{}
+class getAllUsersSuccessState extends HomeStates {
+  final List<UserModel> users;
 
+  getAllUsersSuccessState(this.users);
+  @override
+  List<Object?> get props => [users];
+}
 
-class getCountlikesSuccessState extends HomeStates{}
+class getAllUsersErrorState extends HomeStates {}
 
+class sendMessageSuccessState extends HomeStates {}
 
-class getSuccess extends HomeStates{}
+class sendMessageErrorState extends HomeStates {}
 
-class getMyPostsErrorState extends HomeStates{}
-class getMySuccess extends HomeStates{}
-class getMyPostsLoadingState extends HomeStates{}
+class sendMessagetoRecieverSuccessState extends HomeStates {}
 
-class getColorSuccess extends HomeStates{}
+class sendMessagetoRecieverErrorState extends HomeStates {}
 
-class isLikeChecker extends HomeStates{}
+class getMessagesSuccessState extends HomeStates {
+  final List<MessageModel> messages;
 
-class increaseNumState extends HomeStates{}
-class decreaseNumState extends HomeStates{}
+  getMessagesSuccessState(this.messages);
 
+  @override
+  List<Object?> get props => [messages];
+}
+class GetAllCategoriesSucessEdit extends HomeStates {
+  GetAllCategoriesSucessEdit(this.categories);
 
-class getAllUsersLoadingState extends HomeStates{}
-class getAllUsersSuccessState extends HomeStates{}
-class getAllUsersErrorState extends HomeStates{}
+  final List<Category> categories;
 
-
-class sendMessageSuccessState extends HomeStates{}
-class sendMessageErrorState extends HomeStates{}
-
-
-class sendMessagetoRecieverSuccessState extends HomeStates{}
-class sendMessagetoRecieverErrorState extends HomeStates{}
-
-
-class testes extends HomeStates{}
-
-
-class getMessagesSuccessState extends HomeStates{}
+  @override
+  List<Object> get props => [categories];
+}

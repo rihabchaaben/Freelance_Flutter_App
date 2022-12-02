@@ -39,13 +39,23 @@ dependencies:
   sign_button: ^2.0.2
   group_radio_button: ^1.2.0
   flutter_svg: ^0.20.0-nullsafety.3
+  ffi: ^1.1.2
   fl_chart: ^0.35.0
   flutter_facebook_auth: ^4.3.4+2
   firebase_core: ^1.18.0
   multi_select_flutter: ^4.1.2
   firestore_search: ^0.1.9
-
-
+  tflite_flutter: ^0.9.0
+  shared_preferences: ^2.0.15
+  overlay_support: ^2.0.1
+  responsive_framework: ^0.2.0
+  rxdart: ^0.27.5
+  cached_network_image: ^3.2.2
+  intl_phone_field: ^3.1.0
+  flutter_document_picker: ^5.1.0
+  advance_pdf_viewer: ^2.0.1
+  #advance_pdf_viewer: ^2.0.1
+  syncfusion_flutter_pdfviewer: ^20.2.45-beta
 
 dev_dependencies:
   flutter_test:
@@ -57,22 +67,23 @@ dev_dependencies:
   dio:
   flutter_styled_toast:
   flutter_rating_bar: ^4.0.1
+  percent_indicator: ^4.2.2
    #ETC
-  shared_preferences: ^2.0.4
   url_launcher: ^6.0.2
   intl: ^0.17.0
     #Notification Pacakges
-  firebase_messaging: ^9.0.0
-  flutter_local_notifications: ^5.0.0-nullsafety.1
+  firebase_messaging: ^13.0.4
+  flutter_local_notifications: ^9.7.0
   flutter_app_badger: ^1.2.0
   animated_bottom_navigation_bar:
   image_picker: ^0.8.4+2
   firebase_storage:
+  animate_icons:
   flutter_launcher_icons:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/logo.jfif"
+  image_path: "assets/images/18771.jpg"
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -124,6 +135,7 @@ flutter:
   
   assets:
     - assets/images/
+    - assets/
 
   fonts:
     - family: Montserrat

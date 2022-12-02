@@ -1,28 +1,36 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance_dxb/cubit/home_layout/cubit.dart';
 import 'package:freelance_dxb/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freelance_dxb/screens/chat/chats.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import '../../../models/customer_model.dart';
 import '../../../screens/marketplace/marketplaceUi.dart';
 import '../../../screens/settings/settings_screen-customer.dart';
+import '../../logIn/logIn_cubit.dart';
 
 part 'customer_profile_state.dart';
 
 class CustomerProfileCubit extends Cubit<CustomerProfileState> {
-  CustomerProfileCubit() : super(CustomerProfileInitial());
+  final LogInCubit loginCubit;
+    late UserModel currentUser;
+
+  CustomerProfileCubit(this.loginCubit) : super(CustomerProfileInitial()) {
+     loginCubit.currentUserStream.listen((user) {
+      currentUser = user;
+    });
+  }
 
   static CustomerProfileCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
-
+  CustomerModel? customerModel;
   late int currentIndex = 0;
 
   List<String> titlesCustomer = ["Chats", "Marketplace", "Profile"];
-  List<Widget> screensCustomer = [
+  final List<Widget> screensCustomer = [
     Chats(),
     MarketplaceFreelancers(),
     SettingsCustomer(),
@@ -36,7 +44,7 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   UserModel? getUserData({uid}) {
     emit(getUserLoadingState());
     FirebaseFirestore.instance.collection('users').doc(uid).get().then((value) {
-      userModel = UserModel.fromJson(value.data());
+      userModel = UserModel.fromMap(value.data());
       emit(getUserSuccessState());
     }).catchError((e) {
       print(e.toString());
@@ -132,16 +140,15 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     image,
     email,
     uid,
-    isVerified,
+  
   }) {
     emit(uploadUserLoadingState());
-    UserModel model = UserModel(
+    CustomerModel model = CustomerModel(
       name: name,
       phone: phone,
       adress: adress,
       password: password,
-      role: "freelancer",
-      //  cover: cover ?? userModel!.cover,
+      role: "customer",
       image: image ?? userModel!.image,
       email: email ?? userModel!.email,
       uid: uid ?? userModel!.uid,
@@ -152,7 +159,6 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
         .update(model.toMap())
         .then((value) {
       emit(updateUploadDataUser());
-      HomeCubit().getUserData(uid: userModel!.uid);
     }).catchError((e) {
       print(e.toString());
       emit(uploadUserErrorState());
@@ -168,10 +174,10 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     image,
     email,
     uid,
-    isVerified,
+  
   }) {
     emit(uploadUserLoadingState());
-    UserModel model = UserModel(
+    CustomerModel model = CustomerModel(
       name: name,
       phone: phone,
       adress: adress,
@@ -187,8 +193,8 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
         .doc(userModel!.uid)
         .update(model.toMap())
         .then((value) {
+          customerModel=model;
       emit(updateUploadDataUser());
-      HomeCubit().getUserData(uid: userModel!.uid);
     }).catchError((e) {
       print(e.toString());
       emit(uploadUserErrorState());

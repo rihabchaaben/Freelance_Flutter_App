@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:freelance_dxb/cubit/home_layout/cubit.dart';
 import 'package:freelance_dxb/models/erole.dart';
 import 'package:freelance_dxb/screens/auth/signUpGo.dart';
 import 'package:freelance_dxb/screens/layout/home_layout.dart';
-import 'package:freelance_dxb/models/user_model.dart';
 import 'package:freelance_dxb/cubit/login/logIn_cubit.dart';
 import 'package:freelance_dxb/cubit/logIn/logIn_states.dart';
 import 'package:freelance_dxb/screens/adminstration/dashboard.dart';
@@ -16,7 +14,6 @@ import 'package:freelance_dxb/style/colors.dart';
 import '../../style/style.dart';
 import '../../style/text.dart';
 import 'package:sign_button/sign_button.dart';
-import '../../style/colors.dart';
 import '../layout/home_layout_customer.dart';
 
 class SignIn extends StatefulWidget {
@@ -52,153 +49,132 @@ class _SignInState extends State<SignIn> {
       create: (context) => LogInCubit(),
       child: BlocConsumer<LogInCubit, LogInStates>(
         builder: (context, state) => Scaffold(
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(),
-            child: SingleChildScrollView(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          body: SingleChildScrollView(
+            child:
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center, 
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.20,
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 30.0,
-                          ),
-                          Text(
-                            welcomeTitle,
-                            style: titleStyle,
-                          ),
+              const SizedBox(
+                height: 30.0,
+              ),
+              Text(
+                welcomeTitle,
+                style: titleStyle,
+              ),
 
-                          // ignore: prefer_const_constructors
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.fromLTRB(20, 10, 150, 0),
-                      child: Text(
-                        'Sign In',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.fromLTRB(20, 10, 450, 0),
-                      child: Column(
-                        children: const [
-                          Text(
-                            'Hi there ! Nice to see you again ',
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      //  padding: const EdgeInsets.fromLTRB(20, 10, 300, 0),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.70,
-                            width: MediaQuery.of(context).size.width,
-                            color: bgColor,
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 40.0,
-                                  horizontal: 40.0,
-                                ),
-                                child: Form(
-                                  key: formKey,
-                                  child: Column(
-                                    // ignore: prefer_const_constructors
+              // ignore: prefer_const_constructors
+SizedBox(height: 30,),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  '  Sign In',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+SizedBox(height: 20,),
+              Align(
+             alignment: Alignment.bottomLeft,
 
-                                    children: [
-                                      buildEmailInput(),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      buildPasswordInput(),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 48.0,
-                                          bottom: 28.0,
-                                        ),
-                                        child: MaterialButton(
-                                          onPressed: () {
-                                            if (formKey.currentState!
-                                                .validate()) {
-                                              LogInCubit.get(context).postLogIn(
-                                                  email: emailController.text,
-                                                  password:
-                                                      passwordController.text);
-
-                                            }
-
-                                          },
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          color: Colors.red,
-                                          minWidth: double.infinity,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8.0),
-                                            child: state is LogInLoadingState
-                                                ? CircularProgressIndicator(
-                                                    color: Colors.white,
-                                                  )
-                                                : Text(
-                                                    "LogIn",
-                                                    style: TextStyle(
+                child: Text(
+                  '  Hi there ! Nice to see you again ',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+SizedBox(height: 20,),
+               
+                   
+                        
+                         Form(
+                            key: formKey,
+                            child: SizedBox(
+                              height: 400,
+                              width: 400,
+                              child: Expanded(
+                                child: Column(
+                                  // ignore: prefer_const_constructors
+                                                crossAxisAlignment: CrossAxisAlignment.start,  
+                                                mainAxisSize: MainAxisSize.max,
+                                                          
+                                  children: [
+                                    buildEmailInput(),
+                                    SizedBox(
+                                      height: 8.0,
+                                    ),
+                                    buildPasswordInput(),
+                                    SizedBox(
+                                      height: 8.0,
+                                    ),
+                                     MaterialButton(
+                                        onPressed: () {
+                                          if (formKey.currentState!.validate()) {
+                                            LogInCubit.get(context).postLogIn(
+                                                email: emailController.text,
+                                                password: passwordController.text);
+                                          }
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        color: Colors.red,
+                                        minWidth: double.infinity,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: state is LogInLoadingState
+                                              ? CircularProgressIndicator(
+                                                  color: Colors.white,
+                                                )
+                                              : Text(
+                                                  "LogIn",
+                                                  style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 25,
-                                                    ),
-                                                  ),
-                                          ),
+                                                      fontSize: 30,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
                                         ),
                                       ),
-                                      const Text(
+                                       SizedBox(
+                                      height: 20
+                                    ),
+                                     Align(
+                                      alignment: Alignment.topCenter,
+                                       child: Text(
                                         'Or use one of your profiles',
                                         style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 182, 175, 175),
+                                          fontSize: 20,
+                                          color: Color.fromARGB(255, 107, 105, 105),
                                         ),
-                                      ),
-                                      buildBottomSocialMedia(),
-                                      const SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                                                     ),
+                                     ),
+                                        SizedBox(
+                                      height: 20
+                                    ),
+                                    buildBottomSocialMedia(),
+                                    const SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Center(
+                                      child: Row(
                                         children: [
-                                          // ignore: prefer_const_constructors
-                                          Text(
-                                            "Don't have an account?",
-                                            style: const TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              color: Color.fromARGB(
-                                                  255, 182, 175, 175),
-                                            ),
-                                          ),
-                                          // ignore: prefer_const_constructors
+                                         Text(
+                                                "     Don't have an account?",
+                                                style: const TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 20,
+                                                  color:
+                                                      Color.fromARGB(255, 107, 105, 105),
+                                                ),
+                                              ),
+                                        
+                                                                     
                                           TextButton(
                                               onPressed: () {
                                                 Navigator.push(
@@ -210,42 +186,43 @@ class _SignInState extends State<SignIn> {
                                               child: Text(
                                                 "Sign Up",
                                                 style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.bold,
                                                     color: Colors.red),
                                               )),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ]),
-            ),
+                      
+                 
+                  ],
+                ),
+          
+           
           ),
         ),
         listener: (context, state) {
           if (state is LogInSuccessState) {
-             ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
             CacheHelper.saveData(key: "isSigned", value: true);
-            if(state.role==ERole.admin){
-                Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => Dashboard()));
-
+            if (state.role == ERole.admin) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Dashboard()));
+            } else if (state.role == ERole.freelancer) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => HomeLayout()));
+            } else if (state.role == ERole.customer) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomeLayoutCustomer()));
             }
-            else if(state.role==ERole.freelancer){
-                Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => HomeLayout()));
-
-            }
-            else if(state.role==ERole.customer){
-           
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => HomeLayoutCustomer()));
-          }}
+          }
 
           if (state is LogInErrorState) {
             toast(Colors.red, state.error, context);
@@ -256,92 +233,95 @@ class _SignInState extends State<SignIn> {
   }
 
   buildEmailInput() {
-    return TextFormField(
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-      onChanged: (value) {
-        email = value;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "Please enter Email";
-        }
-      },
-      decoration: const InputDecoration(
-        labelText: 'Email',
-        labelStyle: const TextStyle(
-          color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-        ),
-        focusColor: Colors.white,
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide:
-              const BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
-        ),
+   
+    return Expanded(
+      flex: 2,
+      child: TextFormField(
+          controller: emailController,
+          keyboardType: TextInputType.emailAddress,
+          onChanged: (value) {
+            email = value;
+          },
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "Please enter Email";
+            }
+            return null;
+          },
+          decoration: const InputDecoration(
+            labelText: 'Email',
+            labelStyle: const TextStyle(
+              color: Color.fromARGB(255, 240, 67, 67),
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+            focusColor: Colors.white,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
+            ),
+          ),
+          style: const TextStyle(),
+       
       ),
-      style: const TextStyle(),
     );
   }
 
   buildPasswordInput() {
-    return TextFormField(
-      controller: passwordController,
-      obscureText: true,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "Please enter Password";
-        }
-      },
-      onChanged: (value) {
-        password = value;
-      },
-      onSaved: (val) => password = val!,
-      style: const TextStyle(
-        fontSize: 14,
-        color: Color.fromARGB(255, 10, 10, 10),
-        fontWeight: FontWeight.w600,
-      ),
-      decoration: InputDecoration(
-        focusColor: Colors.white,
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
+    return Expanded(
+      flex: 2,
+      child: TextFormField(
+        controller: passwordController,
+        obscureText: true,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Please enter Password";
+          }
+          return null;
+        },
+        onChanged: (value) {
+          password = value;
+        },
+        onSaved: (val) => password = val!,
+        style: const TextStyle(
+          fontSize: 16,
+          color: Color.fromARGB(255, 10, 10, 10),
+          fontWeight: FontWeight.w600,
         ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
-        ),
-        suffixIcon: GestureDetector(
-          onTap: () {
-            _obscureText = !_obscureText;
-          },
-          child: Icon(
-            _obscureText ? Icons.visibility_off : Icons.visibility,
-            color: Color.fromARGB(255, 88, 87, 87),
+        decoration: InputDecoration(
+          focusColor: Colors.white,
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
           ),
-        ),
-        fillColor: Color.fromARGB(255, 88, 87, 87),
-        labelText: 'Password',
-        labelStyle: const TextStyle(
-          color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
+          ),
+          suffixIcon: GestureDetector(
+            onTap: () {
+              _obscureText = !_obscureText;
+            },
+            child: Icon(
+              _obscureText ? Icons.visibility_off : Icons.visibility,
+              color: Color.fromARGB(255, 88, 87, 87),
+            ),
+          ),
+          fillColor: Color.fromARGB(255, 88, 87, 87),
+          labelText: 'Password',
+          labelStyle: const TextStyle(
+            color: Color.fromARGB(255, 240, 67, 67),
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
   }
 
   buildBottomSocialMedia() {
-    return Padding(
-        padding: const EdgeInsets.only(
-          top: 20.0,
-          bottom: 0.0,
-          right: 0.0,
-          left: 0.0,
-        ),
-        child: Row(
+    return  Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SignInButton(
@@ -370,12 +350,12 @@ class _SignInState extends State<SignIn> {
                 width: 125,
                 // small(default), medium, large
                 onPressed: () {
-                  signInWithFacebook();
+                  //signInWithFacebook();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Dashboard()));
                 }),
           ],
-        ));
+        );
   }
 
   Future<UserCredential> signInWithFacebook() async {

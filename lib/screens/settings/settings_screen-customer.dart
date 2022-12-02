@@ -41,12 +41,14 @@ class SettingsCustomer extends StatelessWidget {
                         ),
                       ],
                     ),
+                     SizedBox(
+                      height: 20,
+                    ),
                     Center(
                         child: Text(
-                            CustomerProfileCubit.get(context).userModel!.name ??
-                                "",
+                            CustomerProfileCubit.get(context).userModel!.name ,
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 17))),
+                                fontWeight: FontWeight.w500, fontSize: 25))),
                     SizedBox(
                       height: 80,
                     ),
@@ -60,6 +62,7 @@ class SettingsCustomer extends StatelessWidget {
                           ),
                           Icon(
                             Icons.email,
+                            size: 30,
                             color: Colors.grey,
                           ),
                           SizedBox(
@@ -70,10 +73,9 @@ class SettingsCustomer extends StatelessWidget {
                               child: Text(
                                   CustomerProfileCubit.get(context)
                                           .userModel!
-                                          .email ??
-                                      "",
+                                          .email,
                                   style:
-                                      Theme.of(context).textTheme.bodyText2)),
+                                     TextStyle(fontSize: 20))),
                           Padding(
                             padding:
                                 const EdgeInsets.fromLTRB(100, 8.0, 0, 0.0),
@@ -85,7 +87,8 @@ class SettingsCustomer extends StatelessWidget {
                                         builder: (context) =>
                                             EditProfileCustomerScreen()));
                               },
-                              child: Icon(
+                              child: 
+                             Icon(
                                 Icons.edit_rounded,
                                 color: Colors.red,
                               ),
@@ -104,6 +107,7 @@ class SettingsCustomer extends StatelessWidget {
                         Icon(
                           Icons.phone,
                           color: Colors.grey,
+                          size: 30,
                         ),
                         SizedBox(
                           height: 8.0,
@@ -111,9 +115,8 @@ class SettingsCustomer extends StatelessWidget {
                         ),
                         Center(
                             child: Text(
-                          CustomerProfileCubit.get(context).userModel!.phone ??
-                              "",
-                          style: Theme.of(context).textTheme.bodyText2,
+                          CustomerProfileCubit.get(context).userModel!.phone,
+                          style:TextStyle(fontSize: 20),
                         ))
                       ]),
                     ),

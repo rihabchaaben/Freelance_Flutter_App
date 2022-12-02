@@ -34,13 +34,14 @@ class Category extends Equatable {
     };
   }
 
-  factory Category.fromMap(Map<String, dynamic> map) {
+  factory Category.fromMap(Map<String, dynamic>? map) {
     return Category(
-        id: map['id'] as String,
-        designation: map['designation'] as String,
-        subCategories: List<String>.from(
-          (map['subCategories'] as List<String>),
-        ));
+      id: map!['id'] as String,
+      designation: map['designation'] as String,
+      subCategories: map['subCategories'] == null
+          ? <String>[]
+          : (map['subCategories'] as List<dynamic>).cast<String>(),
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -67,6 +68,9 @@ class Category extends Equatable {
       id.hashCode ^ designation.hashCode ^ subCategories.hashCode;
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        this.id,
+        this.designation,
+        this.subCategories,
+      ];
 }

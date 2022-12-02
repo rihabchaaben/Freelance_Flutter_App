@@ -5,7 +5,8 @@ import 'package:freelance_dxb/models/user_model.dart';
 import 'package:freelance_dxb/cubit/signUp/cubit/signup_states.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:freelance_dxb/repositories/categories_repository.dart';
+
+import '../../../models/customer_model.dart';
 
 class SignUpCubit extends Cubit<SignUpStates> {
   SignUpCubit() : super(SignUpInitialState());
@@ -26,14 +27,13 @@ class SignUpCubit extends Cubit<SignUpStates> {
     required String name,
     required String phone,
     required String adress,
-    required String sessionPrice,
-    required String hourPrice,
-    String? subcategory,
+     String? sessionPrice,
+     String? hourPrice,
+    required List<String> subcategory,
     required String role,
     required String email,
     String image = "",
-    // String cover =
-    //"https://image.freepik.com/free-photo/top-view-chopping-board-with-delicious-kebab-lemon_23-2148685530.jpg",
+    rate="0.0",
     String bio = "Write yor bio ...",
     required String password,
   }) {
@@ -42,19 +42,19 @@ class SignUpCubit extends Cubit<SignUpStates> {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
       getUserData(
+        rate:rate,
           email: email,
           password: password,
           phone: phone,
           uid: value.user!.uid,
           name: name,
-          isVerified: value.user!.emailVerified,
           bio: bio,
           role: role,
           hourPrice: hourPrice,
           sessionPrice: sessionPrice,
-          // cover: cover,
           adress: adress,
-          image: image);
+          image: image,
+          subcategory: subcategory);
       emit(SignUpSuccessState());
     }).catchError((error) {
       emit(SignUpErrorState(error.toString()));
@@ -68,29 +68,21 @@ class SignUpCubit extends Cubit<SignUpStates> {
     required String adress,
     required String role,
     required String email,
-    String? sessionPrice,
-    String? hourPrice,
     String image = "",
-    // String cover =
-    //"https://image.freepik.com/free-photo/top-view-chopping-board-with-delicious-kebab-lemon_23-2148685530.jpg",
-    String bio = "Write yor bio ...",
     required String password,
   }) {
     emit(SignUpLoadingState());
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      getUserData(
+      getCustomerData(
           email: email,
           password: password,
           phone: phone,
           uid: value.user!.uid,
           name: name,
-          isVerified: value.user!.emailVerified,
           role: role,
           adress: adress,
-          hourPrice: hourPrice,
-          sessionPrice: sessionPrice,
           image: image);
       emit(SignUpSuccessState());
     }).catchError((error) {
@@ -100,13 +92,13 @@ class SignUpCubit extends Cubit<SignUpStates> {
   }
 
   void getUserData({
+    required List<String> subcategory,
     required String name,
     required String phone,
     required String email,
     required String image,
-    // required String cover,
+    String? rate,
     String? bio,
-    required bool isVerified,
     required String password,
     required String uid,
     required String adress,
@@ -116,14 +108,58 @@ class SignUpCubit extends Cubit<SignUpStates> {
   }) {
     emit(UserLoadingState());
     UserModel model = UserModel(
+      rate:rate,
+      hourPrice: hourPrice,
+      sessionPrice: sessionPrice,
         name: name,
         phone: phone,
         email: email,
         adress: adress,
         role: role,
-        isVerified: isVerified,
         password: password,
         bio: bio,
+        image: image,
+        uid: uid,
+         subcategory:subcategory);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .set(model.toMap())
+        .then((value) {
+      emit(UserSuccessState());
+    }).catchError((e) {
+      print(e.toString());
+      emit(UserErrorState(e.toString()));
+    });
+  }
+
+  Future<void> getAllCategories() async {
+    final categoriesSnapshot =
+        await FirebaseFirestore.instance.collection('categories').get();
+    final result = categoriesSnapshot.docs.map((currentData) {
+      final data = currentData.data();
+      return Category.fromMap(data);
+    }).toList();
+    emit(GetAllCategoriesSucess(result));
+  }
+
+  void getCustomerData(
+      {required String email,
+      required String password,
+      required String phone,
+      required String uid,
+      required String name,
+      required String role,
+      required String adress,
+      required String image}) {
+    emit(UserLoadingState());
+    CustomerModel model = CustomerModel(
+        name: name,
+        phone: phone,
+        email: email,
+        adress: adress,
+        role: role,
+        password: password,
         image: image,
         uid: uid);
     FirebaseFirestore.instance
@@ -138,25 +174,4 @@ class SignUpCubit extends Cubit<SignUpStates> {
     });
   }
 
-  late List<Category> categories;
-  Category? category;
-/** 
-  Future? getAllCategories() {
-    emit(GetAllCategoriesLoading());
-    categories = [];
-    CategoriesRepository().getCategoriesList().then((value) {
-      for (var element in value.docs) {
-        element.reference.get().then((value) {
-          if (category?.id != element.data()['uid'])
-            categories.add(Category.fromMap(element.data()));
-          print(value.data());
-        }).whenComplete(() {
-          emit(GetAllCategoriesSucess(categories));
-        });
-      }
-      ;
-    }).catchError((error) {
-      emit(GetAllCategoriesError());
-    });
-  }*/
 }

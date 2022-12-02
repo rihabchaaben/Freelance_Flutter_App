@@ -9,9 +9,11 @@ class MarketplaceRepository {
           FirebaseFirestore.instance
               .collection('users')
               .where('role', isEqualTo: 'freelancer')
+              .orderBy('rate')
               .get();
       return freelancersRecords;
     } catch (e) {
+        print("error in loading freelancers from firebase");
       rethrow;
     }
   }
@@ -34,7 +36,7 @@ class MarketplaceRepository {
 
   UserModel? getFreelancerData({uid}) {
     FirebaseFirestore.instance.collection('users').doc(uid).get().then((value) {
-      userModel = UserModel.fromJson(value.data());
+      userModel = UserModel.fromMap(value.data());
     }).catchError((e) {
       print(e.toString());
     });

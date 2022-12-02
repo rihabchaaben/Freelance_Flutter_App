@@ -59,19 +59,18 @@ class CategoriesRepository {
   late List<Category> categories;
   Category? category;
 
-  Future? getAllCaregories() {
-    categories = [];
+  List<Category> getAllCaregories() {
+    List<Category> categories = [];
     FirebaseFirestore.instance.collection('categories').get().then((value) {
       for (var element in value.docs) {
         element.reference.get().then((value) {
-          if (category!.id != element.data()['id'])
-            categories.add(Category.fromMap(element.data()));
+          categories.add(Category.fromMap(element.data()));
           print(value.data());
         }).whenComplete(() {});
       }
-      ;
-    }).catchError((error) {
-    });
+      return categories;
+    }).catchError((error) {});
+    return categories;
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getCategoriesList() {

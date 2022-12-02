@@ -1,40 +1,60 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-part of 'offer_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:freelance_dxb/models/offer_model.dart';
+import 'package:freelance_dxb/models/user_model.dart';
 
-@immutable
-abstract class OfferState extends Equatable {
-  
-  const OfferState();
+
+abstract class OfferState extends Equatable {}
+
+
+class OfferInitial extends OfferState {
+  @override
   List<Object> get props => [];
-  get offers => null;
 }
 
+class GetAllOffersSucess extends OfferState {
+  GetAllOffersSucess(this.offers);
 
-class getAllOffersLoadingState extends OfferState {}
-
-class getAllOffersSuccessState extends OfferState {}
-
-class getAllOffersErrorState extends OfferState {
-    final String errorMessage;
-      getAllOffersErrorState(this.errorMessage);
-}
-
-class OfferInitial extends OfferState {}
-
-class OfferLoading extends OfferState {}
-
-class OfferSuccess extends OfferState {
   final List<Offer> offers;
-  const OfferSuccess(this.offers);
+
+  @override
+  List<Object> get props => [offers];
+}
+class GetFreelancerSuccess extends OfferState{
+  final UserModel user;
+
+  GetFreelancerSuccess(this.user);
+  @override
+  List<Object?> get props => [user];
+
+}
+
+class GetAllOffersError extends OfferState {
+  @override
+  List<Object> get props => [];
+}
+
+class GetAllOffersLoading extends OfferState {
+  @override
+  List<Object> get props => [];
+}
+
+
+class GetAllOffersByFreelancerSucess extends OfferState {
+  GetAllOffersByFreelancerSucess(this.offers);
+
+  final List<Offer> offers;
+
+  @override
   List<Object> get props => [offers];
 }
 
-class OfferFailed extends OfferState {
-  final String error;
-  const OfferFailed(this.error);
-  List<Object> get props => [error];
+class GetAllOffersByFreelancerError extends OfferState {
+  @override
+  List<Object> get props => [];
 }
 
-class OfferEmpty extends OfferState {}
-
-class OfferDeleted extends OfferState {}
+class GetAllOffersByFreelancerLoading extends OfferState {
+  @override
+  List<Object> get props => [];
+}

@@ -168,6 +168,7 @@ class _StartScreenState extends State<StartScreen> {
         if (value!.isEmpty) {
           return "Please enter Email";
         }
+        return null;
       },
       decoration: const InputDecoration(
         labelText: 'Email',
@@ -196,6 +197,7 @@ class _StartScreenState extends State<StartScreen> {
         if (value!.isEmpty) {
           return "Please enter Password";
         }
+        return null;
       },
       onChanged: (value) {
         password = value;
@@ -273,7 +275,7 @@ class _StartScreenState extends State<StartScreen> {
                       onPressed: () {
                         Navigator.of(ctx).pop();
                       },
-                      child: Text('Okay'),
+                      child:  Text('Okay'),
                     )
                   ],
                 ),

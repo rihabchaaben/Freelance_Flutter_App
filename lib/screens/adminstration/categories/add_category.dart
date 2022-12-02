@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_dxb/cubit/add_category/add_category_cubit.dart';
 import 'package:freelance_dxb/style/colors.dart';
+import '../../../shared/components/components.dart';
 import '../components/app_bar_actions_item.dart';
 import '../components/side_menu.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,9 +57,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       body: BlocConsumer<AddCategoryCubit, AddCategoryState>(
         listener: (context, state) {
           if (state is AddCategorySuccess) {
-            // faire un toast de success
+          toast(Colors.green, "Adding category Succeded", context);
           } else if (state is AddCategoryFailed) {
-            // echec
+          toast(Colors.red, " Adding category failed", context);
           }
         },
         builder: (context, state) {
@@ -67,6 +68,20 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               key: _formkey,
               child: ListView(
                 children: [
+                  SizedBox(height: 40,),
+                 Center(
+                
+                      child: Text(
+                        'create Category',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          color: Color.fromARGB(255, 5, 5, 5),
+                        ),
+                      ),
+                    ),
+                  SizedBox(height: 50,),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(30, 30, 50, 10),
@@ -77,7 +92,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           hintText: 'Enter \'s designation',
                           labelStyle: const TextStyle(
                             color: Color.fromARGB(255, 240, 67, 67),
-                            fontSize: 16,
+                            fontSize: 20,
                             fontWeight: FontWeight.w400,
                           ),
                           focusColor: Colors.white,
@@ -132,7 +147,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                             hintText: 'Enter \'s subcategory',
                             labelStyle: const TextStyle(
                               color: Color.fromARGB(255, 240, 67, 67),
-                              fontSize: 16,
+                              fontSize: 20,
                               fontWeight: FontWeight.w400,
                             ),
                             focusColor: Colors.white,
@@ -161,7 +176,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                   ),
                   //..._getSubcategories(),
                   SizedBox(
-                    height: 40,
+                    height: 80,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -190,7 +205,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                         ),
                         child: const Text(
                           'create category',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white,fontSize: 25),
                         ),
                       ),
                       ElevatedButton(
@@ -200,7 +215,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                               MaterialStateProperty.all(Colors.grey),
                         ),
                         child: const Text('Clear',
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Colors.white,fontSize: 25)),
                       ),
                     ],
                   ),

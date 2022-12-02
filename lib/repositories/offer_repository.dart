@@ -2,20 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freelance_dxb/models/offer_model.dart';
 
 class OfferRepository {
-  OfferRepository();
-
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> addOffer({required Offer offer}) async {
     try {
-      var offercollection = _firestore.collection('offers');
-      await offercollection.add(offer.toMap());
+      var offercollection = _firestore.collection('offers').doc();
+      offer.id=offercollection.id; 
+           await offercollection.set(offer.toMap());
     } catch (e) {
       rethrow;
     }
   }
 
-  Stream<List<Offer>> getOffers({required String currentDate}) {
+  Stream<List<Offer>> getOffersNotExpired({required String currentDate}) {
     try {
       return _firestore
           .collection('offers')
@@ -44,8 +43,18 @@ class OfferRepository {
     }
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getOffers() {
+    try {
+      final Future<QuerySnapshot<Map<String, dynamic>>> offersRecords =
+          FirebaseFirestore.instance.collection('offers').get();
+      return offersRecords;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> updateOffer(String title, String id, String description,
-      String endDate, String startDate, String price) async {
+      String endDate, String startDate, String price,String uid) async {
     try {
       var offercollection = _firestore.collection('offers');
       await offercollection.doc(id).update({
@@ -54,6 +63,7 @@ class OfferRepository {
         'startDate': startDate,
         'endDate': endDate,
         'price': price,
+        'uid':uid,
       });
     } catch (e) {
       rethrow;

@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance_dxb/cubit/customer/cubit/customer_profile_cubit.dart';
+import 'package:freelance_dxb/screens/layout/home_layout_customer.dart';
 import 'package:freelance_dxb/shared/components/components.dart';
 import 'package:freelance_dxb/style/style.dart';
 
-class EditProfileCustomerScreen extends StatelessWidget {
-  var nameController = TextEditingController();
+class EditProfileCustomerScreen extends StatefulWidget {
+
+State<EditProfileCustomerScreen> createState() => EditProfileCustomerScreenState();
+}
+
+class EditProfileCustomerScreenState extends State<EditProfileCustomerScreen> {
+    var nameController = TextEditingController();
   var phoneController = TextEditingController();
   var passwordController = TextEditingController();
   var emailController = TextEditingController();
   var adressController = TextEditingController();
-
+  @override
+  void initState() {
+       nameController.text =
+              CustomerProfileCubit.get(context).userModel!.name;
+          phoneController.text =
+              CustomerProfileCubit.get(context).userModel!.phone;
+          passwordController.text =
+              CustomerProfileCubit.get(context).userModel!.password;
+          emailController.text =
+              CustomerProfileCubit.get(context).userModel!.email;
+          adressController.text =
+              CustomerProfileCubit.get(context).userModel!.adress;
+          var profileImage = CustomerProfileCubit.get(context).profileImage;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -25,15 +45,15 @@ class EditProfileCustomerScreen extends StatelessWidget {
         },
         builder: (context, state) {
           nameController.text =
-              CustomerProfileCubit.get(context).userModel!.name!;
+              CustomerProfileCubit.get(context).userModel!.name;
           phoneController.text =
-              CustomerProfileCubit.get(context).userModel!.phone!;
+              CustomerProfileCubit.get(context).userModel!.phone;
           passwordController.text =
-              CustomerProfileCubit.get(context).userModel!.password!;
+              CustomerProfileCubit.get(context).userModel!.password;
           emailController.text =
-              CustomerProfileCubit.get(context).userModel!.email!;
+              CustomerProfileCubit.get(context).userModel!.email;
           adressController.text =
-              CustomerProfileCubit.get(context).userModel!.adress!;
+              CustomerProfileCubit.get(context).userModel!.adress;
           var profileImage = CustomerProfileCubit.get(context).profileImage;
           var coverImage = CustomerProfileCubit.get(context).coverImage;
 
@@ -161,34 +181,7 @@ class EditProfileCustomerScreen extends StatelessWidget {
                             SizedBox(
                               width: 15,
                             ),
-                          if (CustomerProfileCubit.get(context).coverImage !=
-                              null)
-                            Expanded(
-                                child: Column(
-                              children: [
-                                MaterialButton(
-                                  color: Colors.blue,
-                                  minWidth: double.infinity,
-                                  onPressed: () {
-                                    CustomerProfileCubit.get(context)
-                                        .uploadCover(
-                                            name: nameController.text,
-                                            phone: phoneController.text,
-                                            password: passwordController.text,
-                                            email: emailController.text,
-                                            adress: adressController.text);
-                                  },
-                                  child: Text(
-                                    "Update Cover",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                if (state is uploadCoverImagePickerLoadingState)
-                                  LinearProgressIndicator(
-                                    color: Colors.blue,
-                                  )
-                              ],
-                            )),
+                         
                         ],
                       ),
                     SizedBox(
@@ -234,18 +227,23 @@ class EditProfileCustomerScreen extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                           style: startBtnStyle,
-                          onPressed: () {
+                          onPressed: (
+                            
+                          ) {
                             CustomerProfileCubit.get(context).updateCustomer(
                               name: nameController.text,
                               password: passwordController.text,
                               email: emailController.text,
                               phone: phoneController.text,
                               adress: adressController.text,
+
                             );
+                           Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => HomeLayoutCustomer()));
                           },
                           child: Text(
                             "UPDATE",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white,fontSize: 25),
                           )),
                     )
                   ],

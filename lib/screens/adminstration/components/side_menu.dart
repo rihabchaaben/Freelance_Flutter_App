@@ -4,6 +4,7 @@ import 'package:freelance_dxb/config/responsive.dart';
 import 'package:freelance_dxb/config/size_config.dart';
 import 'package:freelance_dxb/style/style.dart';
 
+import '../../../list-freelancers_reviews.dart';
 import '../categories/category_home.dart';
 
 class SideMenu extends StatefulWidget {
@@ -38,30 +39,41 @@ class _SideMenuState extends State<SideMenu> {
                   : const SizedBox(
                       height: 50,
                     ),
-              IconButton(
-                color: Color.fromARGB(255, 240, 67, 67),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const CategoryHome()));
-                },
-                icon: SvgPicture.asset("assets/images/home.svg"),
-                iconSize: 20,
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
+              Column(
+                children: [
+
+                  IconButton(
+                    color: Color.fromARGB(255, 240, 67, 67),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const CategoryHome()));
+                    },
+                    icon: SvgPicture.asset("assets/images/home.svg"),
+                    iconSize: 20,
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  ),
+                                    Text("Categories",style: TextStyle(color: Colors.red,fontSize: 18,fontWeight: FontWeight.bold),),
+                ],
               ),
-              IconButton(
-                color: Color.fromARGB(255, 240, 67, 67),
-                onPressed: () {},
-                icon: SvgPicture.asset('assets/images/pie-chart.svg'),
-                iconSize: 20,
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
+              Column(
+                children: [
+                  IconButton(
+                    color: Color.fromARGB(255, 240, 67, 67),
+                    onPressed: () {
+                        Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const FreelancersReviews()));
+
+
+
+                    },
+                    icon: SvgPicture.asset('assets/images/pie-chart.svg'),
+                    iconSize: 20,
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  ),
+                    Text("Freelancers",style: TextStyle(color: Colors.red,fontSize: 18,fontWeight: FontWeight.bold),),
+                ],
               ),
-              IconButton(
-                color: Color.fromARGB(255, 240, 67, 67),
-                onPressed: () {},
-                icon: SvgPicture.asset('assets/images/clipboard.svg'),
-                iconSize: 20,
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-              )
+            
             ],
           ),
         ),

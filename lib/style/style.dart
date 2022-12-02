@@ -14,20 +14,22 @@ class AppColors {
 
 TextStyle signText = TextStyle(
   fontFamily: 'Montserrat',
-  fontSize: 18.0,
-  fontWeight: FontWeight.w800,
+  fontSize: 22.0,
+  fontWeight: FontWeight.bold,
   color: Color.fromARGB(255, 3, 3, 3),
+  
 );
 TextStyle titleStyle = TextStyle(
   fontFamily: 'Montserrat',
-  fontSize: 18.0,
-  fontWeight: FontWeight.w800,
+  fontSize: 30.0,
+  fontWeight: FontWeight.bold,
   color: txtColor,
+
 );
 TextStyle descriptionStyle = TextStyle(
   fontFamily: 'Montserrat',
-  fontSize: 12.0,
-  fontWeight: FontWeight.w200,
+  fontSize: 20.0,
+  fontWeight: FontWeight.w800,
   color: txtColor,
 );
 TextStyle textmessageError = TextStyle(
@@ -48,7 +50,7 @@ ButtonStyle startBtnStyle = ButtonStyle(
 );
 TextStyle startBtnTextStyle = const TextStyle(
     fontFamily: 'Montserrat',
-    fontSize: 12.0,
+    fontSize: 25.0,
     fontWeight: FontWeight.w600,
     color: Colors.white);
 BoxDecoration userImg = const BoxDecoration(

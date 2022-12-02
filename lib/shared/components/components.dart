@@ -18,6 +18,7 @@ Widget textFormField(
        if(confirmpass.text != pass!.text){
          return "The password is not the same";
        }
+       return null;
     },
     );
 

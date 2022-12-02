@@ -41,7 +41,7 @@ class HomeLayoutCustomer extends StatelessWidget {
                       },
                       child: Text(
                         "Sign Out",
-                        style: TextStyle(color: Colors.red),
+                        style: TextStyle(color: Colors.red,fontSize: 20),
                       ),
                     )
                   ],

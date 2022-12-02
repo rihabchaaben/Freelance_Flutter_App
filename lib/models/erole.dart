@@ -1,4 +1,4 @@
-enum ERole { freelancer, customer, admin }
+enum ERole {freelancer,customer,admin }
 
 extension RoleExtension on ERole {
   static ERole fromString(String role) {

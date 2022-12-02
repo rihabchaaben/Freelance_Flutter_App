@@ -3,28 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:freelance_dxb/models/erole.dart';
-import 'package:freelance_dxb/repositories/categories_repository.dart';
-import 'package:freelance_dxb/screens/auth/start_screen.dart';
-// ignore: unnecessary_import
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// ignore: unnecessary_import
-import 'package:flutter/rendering.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:freelance_dxb/screens/layout/home_layout.dart';
 import 'package:freelance_dxb/style/colors.dart';
 import 'package:freelance_dxb/style/style.dart';
-// ignore: unused_import
-import 'package:freelance_dxb/style/text.dart';
-// ignore: unused_import
+
 import 'package:group_radio_button/group_radio_button.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import 'package:freelance_dxb/cubit/signUp/cubit/signup_cubit.dart';
 import 'package:freelance_dxb/cubit/signUp/cubit/signup_states.dart';
 import 'package:freelance_dxb/shared/components/components.dart';
 
-import '../../models/category_model.dart';
-// ignore: import_of_legacy_library_into_null_safe
+import '../logIn/log_in.dart';
+import 'MultiSelectCategories.dart';
 
 class SignUpFreelancer extends StatefulWidget {
   const SignUpFreelancer({Key? key}) : super(key: key);
@@ -37,9 +29,7 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
   // FreelancerModel freelancer;
   late List data;
   bool isCreating = false;
-  List<dynamic> _selectedCategories = [];
-  late String _mySelection;
-  late Text _errorMessage;
+  List<String> _selectedCategories = [];
   TextEditingController usernameInput = TextEditingController();
   TextEditingController userPasswordInput = TextEditingController();
   TextEditingController adressInput = TextEditingController();
@@ -58,302 +48,326 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
   List<String> _status = ["session", "hour"];
 
   bool isChecked = false;
-  List<Category> categories = [];
   @override
   void initState() {
-    categories = CategoriesRepository().getAllCaregories() as List<Category>;
+    context.read<SignUpCubit>().getAllCategories();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SignUpCubit(),
-      child: BlocConsumer<SignUpCubit, SignUpStates>(
-        builder: (context, state) => Scaffold(
-            backgroundColor: bgColor,
-            body: Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 30),
-                child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 30.0,
-                          bottom: 2.0,
-                          left: 0.0,
-                          right: 300.0,
-                        ),
-                        child: Text(
-                          'Sign Up',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Color.fromARGB(255, 5, 5, 5),
+    return BlocConsumer<SignUpCubit, SignUpStates>(
+            buildWhen: (previous, current) => current is GetAllCategoriesSucess ,
+
+      builder: (context, state) {
+        if (state is GetAllCategoriesSucess) {
+          return Scaffold(
+              backgroundColor: bgColor,
+              body: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 30),
+                  child: SingleChildScrollView(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 30.0,
+                            bottom: 2.0,
+                            left: 0.0,
+                            right: 300.0,
+                          ),
+                          child: Text(
+                            'Sign Up',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              color: Color.fromARGB(255, 5, 5, 5),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        //  padding: const EdgeInsets.fromLTRB(20, 10, 300, 0),
-                        child: Column(children: [
-                          Container(
-                              height: MediaQuery.of(context).size.height * 0.95,
-                              width: MediaQuery.of(context).size.width,
-                              color: bgColor,
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 0.0,
-                                    horizontal: 20.0,
-                                  ),
-                                  child: Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      children: <Widget>[
-                                        // Add TextFormFields and ElevatedButton here.
-                                        buildUsernameInput(),
-                                        const SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        buildAdressInput(),
-                                        const SizedBox(
-                                          height: 5.0,
-                                        ),
-
-                                        buildEmailInput(),
-                                        const SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        buildUserPhoneInput(),
-                                        const SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        buildPasswordInput(),
-                                        const SizedBox(
-                                          height: 5.0,
-                                        ),
-
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              RadioGroup<String>.builder(
-                                                direction: Axis.horizontal,
-                                                groupValue: _verticalGroupValue,
-                                                horizontalAlignment:
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          //  padding: const EdgeInsets.fromLTRB(20, 10, 300, 0),
+                          child: Column(children: [
+                            Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.95,
+                                width: MediaQuery.of(context).size.width,
+                                color: bgColor,
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 0.0,
+                                      horizontal: 20.0,
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Form(
+                                        key: _formKey,
+                                        child: Column(
+                                          children: <Widget>[
+                                            // Add TextFormFields and ElevatedButton here.
+                                            buildUsernameInput(),
+                                            const SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            buildAdressInput(),
+                                            const SizedBox(
+                                              height: 5.0,
+                                            ),
+                                    
+                                            buildEmailInput(),
+                                            const SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            buildUserPhoneInput(),
+                                            const SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            buildPasswordInput(),
+                                            const SizedBox(
+                                              height: 5.0,
+                                            ),
+                                    
+                                            Row(
+                                                mainAxisAlignment:
                                                     MainAxisAlignment
-                                                        .spaceAround,
-                                                onChanged: (value) =>
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  RadioGroup<String>.builder(
+                                                    direction: Axis.horizontal,
+                                                    groupValue:
+                                                        _verticalGroupValue,
+                                                    horizontalAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    onChanged: (value) =>
+                                                        setState(() {
+                                                      _verticalGroupValue =
+                                                          value!;
+                                                    }),
+                                                    items: _status,
+                                                    textStyle: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Color.fromARGB(
+                                                          255, 240, 67, 67),
+                                                    ),
+                                                    itemBuilder: (item) =>
+                                                        RadioButtonBuilder(
+                                                      item,
+                                                    ),
+                                                  ),
+                                                ]),
+                                            buildPriceInput(),
+                                    
+                                            const SizedBox(
+                                              height: 10.0,
+                                            ),
+                                    
+                                            Row(
+                                              children: [
+                                                MultiSelectCategories(
+                                                  categories: state.categories,
+                                                  selectedSubCategories:
+                                                      _selectedCategories,
+                                                  onConfirm: (results) {
                                                     setState(() {
-                                                  _verticalGroupValue = value!;
-                                                }),
-                                                items: _status,
-                                                textStyle: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Color.fromARGB(
-                                                      255, 240, 67, 67),
+                                                      print(results);
+                                                      _selectedCategories =
+                                                          results;
+                                                    });
+                                                  },
+                                                )
+                                               
+                                              ],
+                                            ),
+                                            Wrap(
+                                              children: [
+                                            if(_selectedCategories.isNotEmpty)
+                                          getTextWidgets(_selectedCategories),
+                                            ],
+                                           ),
+                                
+                                            const SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            buildaboutMeInput(),
+                                            const SizedBox(
+                                              height: 10.0,
+                                            ),
+                                    
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5.0),
+                                              child: CheckboxListTile(
+                                                activeColor: Color.fromARGB(
+                                                    255, 240, 67, 67),
+                                                checkColor: Colors.white,
+                                                controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .leading,
+                                                title: RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14.0),
+                                                    children: <TextSpan>[
+                                                       TextSpan(
+                                                          text:
+                                                              'I agree to',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18,
+                                                          )),
+                                                      TextSpan(
+                                                          text:
+                                                              ' the terms of services ',
+                                                          style: TextStyle(
+                                                            color: Color.fromARGB(
+                                                                255, 240, 67, 67),
+                                                            fontSize: 18,
+                                                          )),
+                                                      TextSpan(
+                                                          text: 'and ',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18
+                                                          )),
+                                                      TextSpan(
+                                                          text: 'privacy policy ',
+                                                          style: TextStyle(
+                                                            color: Color.fromARGB(
+                                                                255, 240, 67, 67),
+                                                            fontSize: 18,
+                                                          )),
+                                                    ],
+                                                  ),
                                                 ),
-                                                itemBuilder: (item) =>
-                                                    RadioButtonBuilder(
-                                                  item,
-                                                ),
+                                    
+                                                value: timeDilation != 1.0,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    timeDilation =
+                                                        value! ? 10.0 : 1.0;
+                                                  });
+                                                },
+                                                //  secondary: const Icon(Icons.hourglass_empty),
                                               ),
-                                            ]),
-                                        buildPriceInput(),
-
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-
-                                        Row(
-                                          children: [
-                                            MultiSelectDialogField(
-                                              
-                                              items: categories
-                                                  .map((e) => MultiSelectItem(
-                                                      e, e.designation))
-                                                  .toList(),
-                                              title: Text("Categories"),
-                                              selectedColor: Colors.red,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey
-                                                    .withOpacity(0.1),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(40)),
-                                                border: Border.all(
-                                                  color: Colors.grey,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              onConfirm: (results) {
-                                                _selectedCategories = results;
-                                              },
+                                            ),
+                                    
+                                            const SizedBox(
+                                              height: 10.0,
+                                            ),
+                                            SizedBox(height: 16.0),
+                                            isCreating
+                                                ? CircularProgressIndicator()
+                                                : ElevatedButton(
+                                                    style: startBtnStyle,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        vertical: 20.0,
+                                                        horizontal: 80.0,
+                                                      ),
+                                                      child: Text(
+                                                        'Sign Up ',
+                                                        style: startBtnTextStyle,
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                      if (_formKey.currentState!
+                                                              .validate() &&
+                                                          _verticalGroupValue ==
+                                                              "session")
+                                                        SignUpCubit.get(context)
+                                                            .postRegister(
+                                                              subcategory: _selectedCategories,
+                                                          name:
+                                                              usernameInput.text,
+                                                          phone: phoneInput.text,
+                                                          email: _emailController
+                                                              .text,
+                                                          password:
+                                                              userPasswordInput
+                                                                  .text,
+                                                          adress:
+                                                              adressInput.text,
+                                                          bio: aboutMeInput.text,
+                                                          sessionPrice:
+                                                              priceInput.text,
+                                                          hourPrice: "",
+                                                          //  role: ERole
+                                                          //   .freelancer
+                                                          //   .name
+                                                          role: "freelancer",
+                                                          
+                                                        );
+                                                      else if (_formKey
+                                                              .currentState!
+                                                              .validate() &&
+                                                          _verticalGroupValue ==
+                                                              "hour")
+                                                        SignUpCubit.get(context)
+                                                            .postRegister(
+                                                              subcategory: _selectedCategories,
+                                                          name:
+                                                              usernameInput.text,
+                                                          phone: phoneInput.text,
+                                                          role: ERole
+                                                              .freelancer.name,
+                                                          email: _emailController
+                                                              .text,
+                                                          password:
+                                                              userPasswordInput
+                                                                  .text,
+                                                          adress:
+                                                              adressInput.text,
+                                                          bio: aboutMeInput.text,
+                                                          sessionPrice: "",
+                                                          hourPrice:
+                                                              priceInput.text,
+                                                        );
+                                    
+                                                      setState(() {
+                                                        isCreating = false;
+                                                      });
+                                                    },
+                                                  ),
+                                            const SizedBox(
+                                              height: 10.0,
+                                            ),
+                                            buildBottomMessage(),
+                                            const SizedBox(
+                                              height: 10.0,
                                             ),
                                           ],
                                         ),
-                                        // value: _dropdownValues.first,
-
-                                        const SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        buildaboutMeInput(),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 5.0),
-                                          child: CheckboxListTile(
-                                            activeColor: Color.fromARGB(
-                                                255, 240, 67, 67),
-                                            checkColor: Colors.white,
-                                            controlAffinity:
-                                                ListTileControlAffinity.leading,
-                                            title: RichText(
-                                              text: TextSpan(
-                                                text: 'I agree to the ',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14.0),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text:
-                                                          'the terms of services ',
-                                                      style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 240, 67, 67),
-                                                        fontSize: 14,
-                                                      )),
-                                                  TextSpan(
-                                                      text: 'and ',
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                      )),
-                                                  TextSpan(
-                                                      text: 'privacy policy ',
-                                                      style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 240, 67, 67),
-                                                        fontSize: 14,
-                                                      )),
-                                                ],
-                                              ),
-                                            ),
-
-                                            value: timeDilation != 1.0,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-                                                timeDilation =
-                                                    value! ? 10.0 : 1.0;
-                                              });
-                                            },
-                                            //  secondary: const Icon(Icons.hourglass_empty),
-                                          ),
-                                        ),
-
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        SizedBox(height: 16.0),
-                                        isCreating
-                                            ? CircularProgressIndicator()
-                                            : ElevatedButton(
-                                                style: startBtnStyle,
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    vertical: 20.0,
-                                                    horizontal: 80.0,
-                                                  ),
-                                                  child: Text(
-                                                    'Sign Up ',
-                                                    style: startBtnTextStyle,
-                                                  ),
-                                                ),
-                                                onPressed: () async {
-                                                  if (_formKey.currentState!
-                                                          .validate() &&
-                                                      _verticalGroupValue ==
-                                                          "session")
-                                                    SignUpCubit.get(context)
-                                                        .postRegister(
-                                                      name: usernameInput.text,
-                                                      phone: phoneInput.text,
-                                                      email:
-                                                          _emailController.text,
-                                                      password:
-                                                          userPasswordInput
-                                                              .text,
-                                                      adress: adressInput.text,
-                                                      bio: aboutMeInput.text,
-                                                      sessionPrice:
-                                                          priceInput.text,
-                                                      hourPrice: "",
-                                                      //  role: ERole
-                                                      //   .freelancer
-                                                      //   .name
-                                                      role: "freelancer",
-                                                    );
-                                                  else if (_formKey
-                                                          .currentState!
-                                                          .validate() &&
-                                                      _verticalGroupValue ==
-                                                          "hour")
-                                                    SignUpCubit.get(context)
-                                                        .postRegister(
-                                                      name: usernameInput.text,
-                                                      phone: phoneInput.text,
-                                                      role:
-                                                          ERole.freelancer.name,
-                                                      email:
-                                                          _emailController.text,
-                                                      password:
-                                                          userPasswordInput
-                                                              .text,
-                                                      adress: adressInput.text,
-                                                      bio: aboutMeInput.text,
-                                                      sessionPrice: "",
-                                                      hourPrice:
-                                                          priceInput.text,
-                                                    );
-
-                                                  setState(() {
-                                                    isCreating = false;
-                                                  });
-                                                },
-                                              ),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        buildBottomMessage(),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ))
-                        ]),
-                      ),
-                    ])))),
-        listener: (context, state) {
-          if (state is SignUpSuccessState) {
-            toast(Colors.green, "Succeded", context);
-          }
-          if (state is SignUpErrorState) {
-            toast(Colors.red, state.error, context);
-          }
-          if (state is UserSuccessState) {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomeLayout()));
-          }
-        },
-      ),
+                                ))
+                          ]),
+                        ),
+                      ]))));
+        }
+        return Center(
+          child: Text(
+           '',
+          ),
+        );
+      },
+      listener: (context, state) {
+        if (state is SignUpSuccessState) {
+          toast(Colors.green, "Succeded", context);
+        }
+        if (state is SignUpErrorState) {
+          toast(Colors.red, state.error, context);
+        }
+        if (state is UserSuccessState) {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => HomeLayout()));
+        }
+      },
     );
   }
 
@@ -370,7 +384,7 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
             fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
         labelStyle: const TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
         focusColor: Colors.white,
@@ -418,7 +432,7 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
             fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
         labelStyle: TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -426,21 +440,13 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
   }
 
   buildUserPhoneInput() {
-    return TextFormField(
+    //phoneInput.text="32123131";
+    return IntlPhoneField(
       controller: phoneInput,
-      onChanged: (val) {},
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your phone number';
-        }
-        return null;
-      },
-      style: const TextStyle(
-        fontSize: 14,
-        color: Color.fromARGB(255, 10, 10, 10),
-        fontWeight: FontWeight.w600,
-      ),
       decoration: const InputDecoration(
+        hintText: 'Please enter your phone Number',
+        hintStyle: TextStyle(
+            fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
         focusColor: Colors.white,
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
@@ -450,15 +456,19 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
         ),
         fillColor: Colors.white,
         labelText: 'Phone Number',
-        hintText: 'Please enter your Phone number',
-        hintStyle: TextStyle(
-            fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
         labelStyle: TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
+      onChanged: (phone) {
+        // print(phone.completeNumber);
+        phoneInput.text = phone.number;
+      },
+      onCountryChanged: (country) {
+        print('Country changed to: ' + country.name);
+      },
     );
   }
 
@@ -492,7 +502,7 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
         labelText: 'Adress',
         labelStyle: TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -539,7 +549,7 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
         labelText: 'Password',
         labelStyle: const TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -562,7 +572,8 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
         fontWeight: FontWeight.w600,
       ),
       decoration: const InputDecoration(
-        hintText: 'Please enter your hour/session price ',
+       // icon:Icon(Icons.monetization_on),
+        hintText: 'Please enter your hour/session price in dollar',
         hintStyle: TextStyle(
             fontSize: 12.0, color: Color.fromARGB(255, 180, 174, 174)),
         focusColor: Colors.white,
@@ -573,10 +584,10 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
           borderSide: BorderSide(color: Color.fromARGB(255, 175, 172, 172)),
         ),
         fillColor: Colors.white,
-        labelText: '',
+        labelText: 'Price',
         labelStyle: TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -595,14 +606,6 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
     return Colors.red;
   }
 
-  final List<String> _dropdownValues = [
-    "It Enginner",
-    "Front end developper",
-    "Three",
-    "Four",
-    "Five"
-  ];
-
   buildaboutMeInput() {
     return TextFormField(
       keyboardType: TextInputType.multiline,
@@ -611,12 +614,6 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
       maxLines: 5,
       controller: aboutMeInput,
       onChanged: (val) {},
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'about you!';
-        }
-        return null;
-      },
       style: const TextStyle(
         fontSize: 14,
         color: Color.fromARGB(255, 10, 10, 10),
@@ -637,7 +634,7 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
         labelText: 'About Me',
         labelStyle: TextStyle(
           color: Color.fromARGB(255, 240, 67, 67),
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -651,7 +648,9 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
 
         style: const TextStyle(
           fontFamily: 'Montserrat',
-          color: Color.fromARGB(255, 182, 175, 175),
+          fontSize: 18,
+          fontWeight: FontWeight.w400,
+          color: Color.fromARGB(255, 131, 128, 128),
         ),
 
         // ignore: prefer_const_constructors
@@ -661,6 +660,8 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
             text: 'Sign In',
             style: const TextStyle(
                 fontFamily: 'Montserrat',
+                fontSize: 25,
+                fontWeight: FontWeight.w500,
                 //fontWeight: FontWeight.bold,
                 color: const Color.fromARGB(255, 240, 67, 67)),
             recognizer: TapGestureRecognizer()
@@ -668,7 +669,7 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
                     () {
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return const StartScreen();
+                        return  SignIn();
                       }));
                     },
                   ),
@@ -677,4 +678,16 @@ class _SignUpFreelancerState extends State<SignUpFreelancer> {
       ),
     );
   }
-}
+} Widget getTextWidgets(List<String>? strings)
+  {
+  List<Widget> list =  <Widget>[];
+if(strings!.length!=0){
+    for(var i = 0; i < strings.length; i++){
+
+        list.add(new Text(strings[i]));
+        list.add(new Text(', '));
+    }
+    }   
+    return new Wrap(children: list);
+  }
+

@@ -1,0 +1,4 @@
+{
+    "php.suggest.basic": false,
+    "java.configuration.updateBuildConfiguration": "interactive"
+}

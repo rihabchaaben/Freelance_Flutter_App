@@ -42,11 +42,11 @@ class _DisplayOffersState extends State<DisplayOffers> {
                   return Card(
                       margin: const EdgeInsets.all(10),
                       child: ListTile(
-                        title: Text(documentSnapshot['title']),
+                        title: Text(documentSnapshot['title'],style:TextStyle(fontSize: 25)),
                         subtitle: Text(
                             documentSnapshot['startDate'].toString() +
                                 '  :  ' +
-                                documentSnapshot['endDate'].toString()),
+                                documentSnapshot['endDate'].toString(),style:TextStyle(fontSize: 18)),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
